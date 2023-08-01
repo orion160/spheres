@@ -1,0 +1,72 @@
+{
+	"version": 5,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 26
+	},
+	"configurePresets": [
+		{
+			"name": "base-x64",
+			"hidden": true,
+			"generator": "Ninja",
+			"architecture": {
+				"value": "x64",
+				"strategy": "external"
+			},
+			"binaryDir": "${sourceDir}/out/build/${presetName}",
+			"installDir": "${sourceDir}/out/install/${presetName}"
+		},
+		{
+			"name": "MSVC-x64",
+			"inherits": "base-x64",
+			"hidden": true,
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": "cl.exe",
+				"CMAKE_CXX_COMPILER": "cl.exe"
+			},
+			"condition": {
+				"type": "equals",
+				"lhs": "${hostSystemName}",
+				"rhs": "Windows"
+			}
+		},
+		{
+			"name": "MSVC-x64-Debug",
+			"inherits": "MSVC-x64",
+			"hidden": false,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug"
+			}
+		},
+		{
+			"name": "MSVC-x64-Release",
+			"inherits": "MSVC-x64",
+			"hidden": false,
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Release"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "default",
+			"hidden": true,
+			"targets": [ "spheres" ],
+			"jobs": 4
+		},
+		{
+			"name": "MSVC-x64-Debug",
+			"hidden": false,
+			"inherits": "default",
+			"configurePreset": "MSVC-x64-Debug",
+			"configuration": "Debug"
+		},
+		{
+			"name": "MSVC-x64-Release",
+			"hidden": false,
+			"inherits": "default",
+			"configurePreset": "MSVC-x64-Release",
+			"configuration": "Release"
+		}
+	]
+}
